@@ -44,6 +44,31 @@ public class PdfGeneratorService {
         }
     }
 
+    // Method to generate a unique file name for the PDF
+    public String generateFileName(PdfDataModel pdfDataModel) {
+        try {
+            // Create a descriptive part of the file name (e.g., based on seller and buyer)
+            String sellerName = pdfDataModel.getSellerName().replaceAll("[^a-zA-Z0-9]", "_");
+            String buyerName = pdfDataModel.getBuyerName().replaceAll("[^a-zA-Z0-9]", "_");
+
+            // Limit the length of the seller and buyer name to avoid excessively long file names
+            sellerName = sellerName.length() > 20 ? sellerName.substring(0, 20) : sellerName;
+            buyerName = buyerName.length() > 20 ? buyerName.substring(0, 20) : buyerName;
+
+            // Generate the hash for the PDF data
+            String dataHash = hashPdfData(pdfDataModel);
+
+            // Combine the descriptive part with the hash
+            String fileName = sellerName + "_" + buyerName + "_" + dataHash + ".pdf";
+
+            // Return the sanitized file name
+            return fileName.replaceAll("[/\\\\:*?\"<>|]", "_");
+        } catch (Exception exception) {
+            logger.error("Error while generating file name", exception);
+            return "default_filename.pdf";
+        }
+    }
+
     // Method to hash the PDF data
     public String hashPdfData(PdfDataModel pdfDataModel) {
         try {
@@ -56,8 +81,11 @@ public class PdfGeneratorService {
             // Generate the hash for the PDF data
             byte[] hash = digest.digest(dataString.getBytes());
 
-            // Return the Base64 encoded hash
-            return Base64.getEncoder().encodeToString(hash);
+            // Base64 encode the hash and sanitize it for file storage
+            String base64Hash = Base64.getEncoder().encodeToString(hash);
+
+            // Replace problematic characters for file paths
+            return base64Hash.replace("/", "_").replace("\\", "_").replace("=", "");
         } catch (Exception exception) {
             // Log the error if hashing fails
             logger.error("Error while hashing PDF data", exception);
