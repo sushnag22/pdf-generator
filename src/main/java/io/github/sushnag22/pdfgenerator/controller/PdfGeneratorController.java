@@ -43,13 +43,10 @@ public class PdfGeneratorController {
     @PostMapping("/generate-and-store")
     public ResponseEntity<String> generateAndStorePdf(@RequestBody PdfDataModel pdfDataModel) {
         try {
-            // Generate the hash for the PDF data
-            String hash = pdfGeneratorService.hashPdfData(pdfDataModel);
+            // Generate the unique name for the PDF file based on the data
+            String fileName = pdfGeneratorService.generateFileName(pdfDataModel);
 
-            if (!hash.isEmpty()) {
-                // Generate the PDF file name
-                String fileName = hash + ".pdf";
-
+            if (!fileName.isEmpty()) {
                 // Path to store the PDF file
                 Path filePath = Paths.get(PDF_DIRECTORY, fileName);
 
