@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+
+<!-- Define the HTML document with Thymeleaf namespace -->
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+
+    <!-- Set the character encoding to UTF-8 -->
+    <meta charset="UTF-8">
+
+    <!-- Set the viewport width to device width for mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set the title of the PDF -->
+    <title>Seller, Buyer, and Item Details PDF</title>
+
+    <style>
+
+        /* Apply a monospace font for a consistent look in the PDF */
+        body {
+            font-family: Courier, monospace;
+        }
+
+        /* Outer container for the entire document, setting a 1px border */
+        .outer-container {
+            border: 1px solid black;
+            width: 100%;
+        }
+
+        /* Style the table for seller and buyer details */
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Style the cells for seller and buyer details */
+        .header-table td {
+            border: 1px solid black;
+            padding: 10px;
+            vertical-align: top;
+            width: 50%;
+        }
+
+        /* Title styling for seller and buyer details */
+        .header-title {
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Style for the item details table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Style for the item details table headers and cells */
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        /* Style for the item details table headers */
+        th, td {
+            text-align: left;
+        }
+
+        /* Style for the item details table header row */
+        th {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Style for the item details table body rows */
+        .centered-text {
+            text-align: center;
+        }
+
+        /* Style for the half-width cells in the header table */
+        .half-width {
+            width: 50%;
+        }
+
+        /* Margin classes for spacing */
+        .left-margin {
+            margin-left: 20px;
+        }
+
+        /* Margin classes for spacing */
+        .bottom-margin {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Outer container holding all the content -->
+<div class="outer-container">
+
+    <!-- Seller and buyer details table -->
+    <table class="header-table">
+        <tr>
+
+            <!-- Seller details -->
+            <td class="half-width">
+                <div class="header-title left-margin">Seller:</div>
+                <div class="left-margin" th:text="${sellerName}"></div>
+                <div class="left-margin" th:text="${sellerAddress}"></div>
+                <div class="left-margin bottom-margin" th:text="'GSTIN: ' + ${sellerGstin}"></div>
+            </td>
+
+            <!-- Buyer details -->
+            <td class="half-width">
+                <div class="header-title left-margin">Buyer:</div>
+                <div class="left-margin" th:text="${buyerName}"></div>
+                <div class="left-margin" th:text="${buyerAddress}"></div>
+                <div class="left-margin" th:text="'GSTIN: ' + ${buyerGstin}"></div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Item details table -->
+    <table>
+        <thead>
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Rate</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <!-- Iterate through items and display each one in its own row -->
+        <tr th:each="item : ${items}">
+            <td class="centered-text" th:text="${item['name']}"></td>
+            <td class="centered-text" th:text="${item['quantity']}"></td>
+            <td class="centered-text" th:text="${item['rate']}"></td>
+            <td class="centered-text" th:text="${item['amount']}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
