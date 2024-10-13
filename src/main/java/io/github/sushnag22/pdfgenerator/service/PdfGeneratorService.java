@@ -76,7 +76,7 @@ public class PdfGeneratorService {
             return fileName.replaceAll("[/\\\\:*?\"<>|]", "_");
         } catch (Exception exception) {
             logger.error("Error while generating file name", exception);
-            return "default_filename.pdf";
+            return "";
         }
     }
 
