@@ -3,6 +3,7 @@ package io.github.sushnag22.pdfgenerator.controller;
 import io.github.sushnag22.pdfgenerator.model.PdfDataModel;
 import io.github.sushnag22.pdfgenerator.service.PdfGeneratorService;
 
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/pdf")
@@ -41,8 +45,19 @@ public class PdfGeneratorController {
 
     // API to generate and store the PDF
     @PostMapping("/generate-and-store")
-    public ResponseEntity<String> generateAndStorePdf(@RequestBody PdfDataModel pdfDataModel) {
+    public ResponseEntity<String> generateAndStorePdf(@Valid @RequestBody PdfDataModel pdfDataModel, BindingResult bindingResult) {
         try {
+
+            // Check if there are validation errors in the PDF data
+            if (bindingResult.hasErrors()) {
+                String errorMessages = bindingResult.getAllErrors().stream()
+                        .map(ObjectError::getDefaultMessage)
+                        .collect(Collectors.joining("; "));
+                // Log the validation errors in the PDF data
+                logger.error("Validation errors in the PDF data: {}", errorMessages);
+                return ResponseEntity.badRequest().body("Please check for validation errors in the PDF data. Errors: " + errorMessages);
+            }
+
             // Generate the unique name for the PDF file based on the data
             String fileName = pdfGeneratorService.generateFileName(pdfDataModel);
 
