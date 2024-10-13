@@ -1,5 +1,6 @@
 package io.github.sushnag22.pdfgenerator.model;
 
+import io.github.sushnag22.pdfgenerator.validation.ItemDetailsValidation;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -44,5 +45,6 @@ public class PdfDataModel {
     private String buyerGstin;
 
     @NotEmpty(message = "Items are mandatory")
+    @ItemDetailsValidation
     private List<Map<String, Object>> items;
 }
