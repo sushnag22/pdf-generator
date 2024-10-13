@@ -4,6 +4,11 @@ import io.github.sushnag22.pdfgenerator.model.PdfDataModel;
 import io.github.sushnag22.pdfgenerator.service.PdfGeneratorService;
 
 import io.github.sushnag22.pdfgenerator.util.StringUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +58,19 @@ public class PdfGeneratorController {
     }
 
     // API to generate and store the PDF
+    @Operation(summary = "Generate and store a PDF file",
+            description = "Generates a PDF file based on the provided data and stores it on the server.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PDF generated and stored successfully",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Map.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Map.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Map.class)))
+    })
     @PostMapping("/generate-and-store")
     public ResponseEntity<Map<String, Object>> generateAndStorePdf(@Valid @RequestBody PdfDataModel pdfDataModel, BindingResult bindingResult) {
         try {
@@ -133,6 +151,15 @@ public class PdfGeneratorController {
     }
 
     // API to download the PDF
+    @Operation(summary = "Download a PDF file",
+            description = "Downloads a specified PDF file from the server.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PDF file downloaded successfully",
+                    content = @Content(mediaType = "application/pdf",
+                            schema = @Schema(type = "string", format = "binary"))),
+            @ApiResponse(responseCode = "404", description = "PDF file not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @GetMapping("/download/{fileName:.+}")
     public ResponseEntity<Resource> downloadPdf(@PathVariable String fileName) {
         try {
