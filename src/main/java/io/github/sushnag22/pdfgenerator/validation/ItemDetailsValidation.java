@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 public @interface ItemDetailsValidation {
 
     // Message to be displayed when the validation fails
-    String message() default "Item details are incorrect. Each item must have 'name', 'quantity', 'rate', and 'amount'";
+    String message() default "Item details are incorrect. Each item must have 'name' (string), 'quantity' (number), 'rate' (number), and 'amount'(number)";
 
     // Groups to which this constraint belongs (default is an empty array)
     Class<?>[] groups() default {};

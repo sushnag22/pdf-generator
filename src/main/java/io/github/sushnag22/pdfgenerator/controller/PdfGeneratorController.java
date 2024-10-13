@@ -14,6 +14,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Files;
@@ -22,6 +23,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 @RestController
+@Validated
 @RequestMapping("/api/v1/pdf")
 public class PdfGeneratorController {
 
