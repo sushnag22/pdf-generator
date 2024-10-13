@@ -1,5 +1,6 @@
 package io.github.sushnag22.pdfgenerator.service;
 
+import io.github.sushnag22.pdfgenerator.model.ItemDetailsModel;
 import io.github.sushnag22.pdfgenerator.model.PdfDataModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,8 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -113,6 +116,16 @@ public class PdfGeneratorService {
             context.setVariable("buyerName", pdfDataModel.getBuyerName());
             context.setVariable("buyerAddress", pdfDataModel.getBuyerAddress());
             context.setVariable("buyerGstin", pdfDataModel.getBuyerGstin());
+
+            for (ItemDetailsModel itemDetailsModel : pdfDataModel.getItems()) {
+                BigDecimal rate = new BigDecimal(itemDetailsModel.getRate().toString());
+                BigDecimal amount = new BigDecimal(itemDetailsModel.getAmount().toString());
+
+                // Format rate and amount to 2 decimal places
+                itemDetailsModel.setRate(rate.setScale(2, RoundingMode.HALF_UP));
+                itemDetailsModel.setAmount(amount.setScale(2, RoundingMode.HALF_UP));
+            }
+
             context.setVariable("items", pdfDataModel.getItems());
 
             // Generate the PDF from the HTML template
