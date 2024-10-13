@@ -1,13 +1,12 @@
 package io.github.sushnag22.pdfgenerator.model;
 
 import io.github.sushnag22.pdfgenerator.validation.ItemDetailsValidation;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -44,7 +43,7 @@ public class PdfDataModel {
     @Size(min = 15, max = 15, message = "Buyer GSTIN must be 15 characters")
     private String buyerGstin;
 
-    @NotEmpty(message = "Items are mandatory")
+    @Valid
     @ItemDetailsValidation
-    private List<Map<String, Object>> items;
+    private List<ItemDetailsModel> items;
 }
