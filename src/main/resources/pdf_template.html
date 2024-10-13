@@ -133,9 +133,9 @@
         <!-- Iterate through items and display each one in its own row -->
         <tr th:each="item : ${items}">
             <td class="centered-text" th:text="${item['name']}"></td>
-            <td class="centered-text" th:text="${item['quantity']}"></td>
-            <td class="centered-text" th:text="${item['rate']}"></td>
-            <td class="centered-text" th:text="${item['amount']}"></td>
+            <td class="centered-text" th:text="${item['quantity']} + ' ' + ${itemQuantityUnit}"></td>
+            <td class="centered-text" th:text="${currencySymbol} + ' ' + ${item['rate']}"></td>
+            <td class="centered-text" th:text="${currencySymbol} + ' ' + ${item['amount']}"></td>
         </tr>
         </tbody>
     </table>

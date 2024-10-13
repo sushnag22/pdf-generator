@@ -32,6 +32,12 @@ public class PdfGeneratorService {
     @Value("${pdf.storage.path}")
     private String PDF_DIRECTORY;
 
+    @Value("${item.quantity.unit}")
+    private String ITEM_QUANTITY_UNIT;
+
+    @Value("${currency.format}")
+    private String CURRENCY_FORMAT;
+
     // Method to create the PDF directory
     public void createPdfDirectory() {
         try {
@@ -125,6 +131,9 @@ public class PdfGeneratorService {
                 itemDetailsModel.setRate(rate.setScale(2, RoundingMode.HALF_UP));
                 itemDetailsModel.setAmount(amount.setScale(2, RoundingMode.HALF_UP));
             }
+
+            context.setVariable("itemQuantityUnit", ITEM_QUANTITY_UNIT);
+            context.setVariable("currencySymbol", CURRENCY_FORMAT);
 
             context.setVariable("items", pdfDataModel.getItems());
 
