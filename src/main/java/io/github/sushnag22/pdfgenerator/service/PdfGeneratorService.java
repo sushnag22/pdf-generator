@@ -3,6 +3,7 @@ package io.github.sushnag22.pdfgenerator.service;
 import io.github.sushnag22.pdfgenerator.model.PdfDataModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -25,7 +26,8 @@ public class PdfGeneratorService {
     Logger logger = LoggerFactory.getLogger(PdfGeneratorService.class);
 
     // Directory where all the PDF files will be stored
-    private static final String PDF_DIRECTORY = "pdfs/";
+    @Value("${pdf.storage.path}")
+    private String PDF_DIRECTORY;
 
     // Method to create the PDF directory
     public void createPdfDirectory() {

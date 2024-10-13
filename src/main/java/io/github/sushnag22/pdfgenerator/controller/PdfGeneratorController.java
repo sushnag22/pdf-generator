@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +29,8 @@ public class PdfGeneratorController {
     private static final Logger logger = LoggerFactory.getLogger(PdfGeneratorController.class);
 
     // Directory where all the PDF files will be stored
-    private static final String PDF_DIRECTORY = "pdfs/";
+    @Value("${pdf.storage.path}")
+    private String PDF_DIRECTORY;
 
     // Service to generate and store the PDF
     private final PdfGeneratorService pdfGeneratorService;
