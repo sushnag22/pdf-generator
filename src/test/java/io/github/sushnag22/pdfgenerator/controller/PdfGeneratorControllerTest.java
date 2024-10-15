@@ -54,7 +54,7 @@ public class PdfGeneratorControllerTest {
         ReflectionTestUtils.setField(pdfGeneratorController, "PDF_DIRECTORY", "/tmp/pdf");
     }
 
-    // Test the generateAndStorePdf method
+    // Test the `generateAndStorePdf` method
     @Test
     public void testGenerateAndStorePdf_Success() throws Exception {
 
@@ -89,7 +89,7 @@ public class PdfGeneratorControllerTest {
         Files.deleteIfExists(filePath);
     }
 
-    // Test the generateAndStorePdf method with validation errors
+    // Test the `generateAndStorePdf` method with validation errors
     @Test
     public void testGenerateAndStorePdf_ValidationError() {
 
@@ -107,7 +107,7 @@ public class PdfGeneratorControllerTest {
         assertEquals("Seller name is required", response.getBody().get("message"));
     }
 
-    // Test the downloadPdf method for success
+    // Test the `downloadPdf` method for success
     @Test
     public void testDownloadPdf_Success() throws Exception {
         Path filePath = Paths.get("/tmp/pdf/testFile.pdf");
@@ -124,7 +124,7 @@ public class PdfGeneratorControllerTest {
         Files.deleteIfExists(filePath);
     }
 
-    // Test the downloadPdf method for file not found error
+    // Test the `downloadPdf` method for file not found error
     @Test
     public void testDownloadPdf_FileNotFound() {
         ResponseEntity<?> response = pdfGeneratorController.downloadPdf("nonExistingFile.pdf");
