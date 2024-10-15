@@ -112,6 +112,9 @@ public class PdfGeneratorControllerTest {
     public void testDownloadPdf_Success() throws Exception {
         Path filePath = Paths.get("/tmp/pdf/testFile.pdf");
 
+        // Cleanup the file if it already exists
+        Files.deleteIfExists(filePath);
+
         // Create a test file for download
         Files.createFile(filePath);
 
