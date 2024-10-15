@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 
 # Build the project and create the JAR files
-RUN gradle build --no-daemon
+RUN ./gradlew build --no-daemon --stacktrace
 
 # Second stage: Create the final image with JDK 21
 FROM eclipse-temurin:21
