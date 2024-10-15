@@ -32,7 +32,7 @@ public class StringUtil {
     }
 
     // Helper method to split camel case into words
-    private String splitCamelCase(String field) {
+    String splitCamelCase(String field) {
 
         // Add a space before each uppercase letter that's followed by a lowercase letter or another uppercase
         Pattern pattern = Pattern.compile("([a-z])([A-Z])");
@@ -41,7 +41,7 @@ public class StringUtil {
     }
 
     // Helper method to capitalize the first letter of each word in the string
-    private String capitalizeWords(String field) {
+    String capitalizeWords(String field) {
         StringBuilder result = new StringBuilder();
 
         // Split the string into words based on spaces
