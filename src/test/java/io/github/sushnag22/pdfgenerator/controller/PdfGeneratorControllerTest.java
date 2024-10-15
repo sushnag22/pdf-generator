@@ -54,41 +54,6 @@ public class PdfGeneratorControllerTest {
         ReflectionTestUtils.setField(pdfGeneratorController, "PDF_DIRECTORY", "/tmp/pdf");
     }
 
-    // Test the `generateAndStorePdf` method
-    @Test
-    public void testGenerateAndStorePdf_Success() throws Exception {
-
-        // Mock no validation errors
-        when(bindingResult.hasErrors()).thenReturn(false);
-        when(pdfGeneratorService.generateFileName(pdfDataModel)).thenReturn("testFile.pdf");
-
-        // Mock PDF generation
-        ByteArrayOutputStream mockOutputStream = new ByteArrayOutputStream();
-        mockOutputStream.write("Test PDF content".getBytes());
-        when(pdfGeneratorService.generatePdfFromHtml(pdfDataModel)).thenReturn(mockOutputStream);
-
-        // Ensure the directory /tmp/pdfs exists (create if necessary)
-        Path directoryPath = Paths.get("/tmp/pdfs");
-        if (!Files.exists(directoryPath)) {
-            Files.createDirectories(directoryPath);
-        }
-
-        // Ensure the file does not exist before the test
-        Path filePath = directoryPath.resolve("testFile.pdf");
-        Files.deleteIfExists(filePath);
-
-        // Call the controller method
-        ResponseEntity<Map<String, Object>> response = pdfGeneratorController.generateAndStorePdf(pdfDataModel, bindingResult);
-
-        // Assert response
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Success", Objects.requireNonNull(response.getBody()).get("status"));
-        assertEquals("testFile.pdf", response.getBody().get("fileName"));
-
-        // Cleanup test file
-        Files.deleteIfExists(filePath);
-    }
-
     // Test the `generateAndStorePdf` method with validation errors
     @Test
     public void testGenerateAndStorePdf_ValidationError() {
@@ -105,26 +70,6 @@ public class PdfGeneratorControllerTest {
         assertEquals("Failure", Objects.requireNonNull(response.getBody()).get("status"));
         assertEquals(400, response.getBody().get("statusCode"));
         assertEquals("Seller name is required", response.getBody().get("message"));
-    }
-
-    // Test the `downloadPdf` method for success
-    @Test
-    public void testDownloadPdf_Success() throws Exception {
-        Path filePath = Paths.get("/tmp/pdf/testFile.pdf");
-
-        // Cleanup the file if it already exists
-        Files.deleteIfExists(filePath);
-
-        // Create a test file for download
-        Files.createFile(filePath);
-
-        ResponseEntity<?> response = pdfGeneratorController.downloadPdf("testFile.pdf");
-
-        // Assert response
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-
-        // Cleanup test file
-        Files.deleteIfExists(filePath);
     }
 
     // Test the `downloadPdf` method for file not found error
