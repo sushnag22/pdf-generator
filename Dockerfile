@@ -1,11 +1,11 @@
-# First stage: Build the application with Gradle and JDK 21
+# First stage: Build the application with Gradle 8.10.2 and JDK 21
 FROM gradle:8.10.2-jdk21 AS build
 WORKDIR /app
 
 # Copy the Gradle project files
 COPY . .
 
-# Ensure gradlew has execute permissions
+# Ensure Gradle Wrapper has execute permissions
 RUN chmod +x ./gradlew
 
 # Build the project and create the JAR files
